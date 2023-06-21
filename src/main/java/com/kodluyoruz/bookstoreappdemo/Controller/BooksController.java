@@ -36,15 +36,17 @@ public class BooksController {
     }
 
     @PostMapping("/delete")
-    public void delete(@RequestParam int id){
-       this.bookService.delete(id);
+    public BookResponseDto delete(@RequestParam int id) {
+
+       return this.bookService.delete(id);
+
     }
 
 
 
     @PostMapping("/update")
-    public void update(@RequestBody BookUpdateDto bookUpdateDto){
-        this.bookService.update(bookUpdateDto);
+    public BookResponseDto update(@RequestBody BookUpdateDto bookUpdateDto){
+      return this.bookService.update(bookUpdateDto);
 
     }
 

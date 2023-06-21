@@ -15,9 +15,8 @@ public interface BookService {
     void  add(BookAddedDto bookAddedDto);
     List<BookResponseDto> getAll();
     BookResponseDto getById(int id);
-    void update(BookUpdateDto bookUpdateDto);
-    void delete(int id);
-
+    BookResponseDto update(BookUpdateDto bookUpdateDto);
+    BookResponseDto delete(int id);
     void updateForTitle(BookUpdateTitleDto bookUpdateTitleDto);
     void updateForPrice(BookUpdatePriceDto bookUpdatePriceDto);
     BookResponseDto getByTitle(String title);
