@@ -23,6 +23,7 @@ public class Book {
 
     @Column
     private String authorName;
+
     @Column
     private  String category;
 
@@ -31,5 +32,4 @@ public class Book {
 
     @Column
     private int unitInStock;
-
 }
