@@ -1,10 +1,14 @@
 package com.kodluyoruz.bookstoreappdemo.Service.Concrete;
 
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookAddedDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdateDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdatePriceDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdateTitleDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.Response.BookResponseDto;
+import com.kodluyoruz.bookstoreappdemo.Core.Exception.BusinessException;
+import com.kodluyoruz.bookstoreappdemo.Core.Results.ErrorResult;
+import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
+import com.kodluyoruz.bookstoreappdemo.Core.Results.SuccessResult;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookAddedDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdatePriceDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateTitleDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.Response.Book.BookResponseDto;
 import com.kodluyoruz.bookstoreappdemo.Entity.Book;
 import com.kodluyoruz.bookstoreappdemo.Repository.BookRepository;
 import com.kodluyoruz.bookstoreappdemo.Service.Contrats.BookService;
@@ -24,10 +28,17 @@ public class BookManager implements BookService {
     private final BookRepository bookRepository;
 
     @Override
-    public void add(BookAddedDto bookAddedDto) {
+    public Result add(BookAddedDto bookAddedDto) {
 
         Book book=this.addRequestToEntity(bookAddedDto);
+        Book checkBook= this.bookRepository.getByTitle(book.getTitle());
+        if (checkBook != null){
+            //throw new BusinessException("Kitap adı benzersiz olmalı ");
+           return new ErrorResult("Kitap adı benzersiz olmalı ");
+        }
+
         this.bookRepository.save(book);
+        return new SuccessResult("Kitap başarıyla Eklendi.");
     }
 
 
@@ -37,7 +48,6 @@ public class BookManager implements BookService {
         List<Book> books = this.bookRepository.findAll();
         List<BookResponseDto> dtoList=this.listEntityToResponseList(books);
         return dtoList;
-
     }
 
 
@@ -73,17 +83,25 @@ public class BookManager implements BookService {
     }
 
     @Override
-    public void updateForTitle(BookUpdateTitleDto bookUpdateTitleDto) {
+    public Result updateForTitle(BookUpdateTitleDto bookUpdateTitleDto) {
       Book book=updateTitleDtoToEntity(bookUpdateTitleDto);
+      if (book == null){
+          return new ErrorResult("Kitap bulunamadı");
+      }
         this.bookRepository.save(book);
+      return new SuccessResult("Kitabın Başlığı güncellendi");
     }
 
 
 
     @Override
-    public void updateForPrice(BookUpdatePriceDto bookUpdatePriceDto) {
-    Book book=this.updatePriceDtoToEntity(bookUpdatePriceDto);
+    public Result updateForPrice(BookUpdatePriceDto bookUpdatePriceDto) {
+        Book book=this.updatePriceDtoToEntity(bookUpdatePriceDto);
+        if (book == null){
+            return new ErrorResult("Kitap bulunamadı");
+        }
         this.bookRepository.save(book);
+        return new SuccessResult("Kitabın değeri güncellendi.");
     }
 
 
@@ -97,13 +115,13 @@ public class BookManager implements BookService {
 
     // Converter Methods
     private Book updateTitleDtoToEntity(BookUpdateTitleDto bookUpdateTitleDto){
-        Book book= this.bookRepository.getById(bookUpdateTitleDto.getId());
+        Book book= this.bookRepository.findById(bookUpdateTitleDto.getId()).orElseThrow(()-> new BusinessException("Kitap bulunamadı"));
         book.setTitle(bookUpdateTitleDto.getTitle());
         return book;
     }
 
     private Book updatePriceDtoToEntity(BookUpdatePriceDto bookUpdatePriceDto){
-        Book book=this.bookRepository.getById(bookUpdatePriceDto.getId());
+        Book book=this.bookRepository.findById(bookUpdatePriceDto.getId()).orElseThrow(()-> new BusinessException("Kitap bulunamadı"));
         book.setPrice(bookUpdatePriceDto.getPrice());
         return book;
     }

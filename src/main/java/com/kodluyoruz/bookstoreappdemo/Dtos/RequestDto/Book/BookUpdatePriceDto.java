@@ -1,4 +1,4 @@
-package com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto;
+package com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book;
 import lombok.Getter;
 import lombok.Setter;
 

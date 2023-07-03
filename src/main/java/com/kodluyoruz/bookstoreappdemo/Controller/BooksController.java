@@ -1,11 +1,11 @@
 package com.kodluyoruz.bookstoreappdemo.Controller;
 
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookAddedDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdateDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdatePriceDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdateTitleDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.Response.BookResponseDto;
-import com.kodluyoruz.bookstoreappdemo.Entity.Book;
+import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookAddedDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdatePriceDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateTitleDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.Response.Book.BookResponseDto;
 import com.kodluyoruz.bookstoreappdemo.Service.Contrats.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +20,9 @@ public class BooksController {
     private final BookService bookService;
 
     @PostMapping("/add")
-    public void  add(@RequestBody BookAddedDto bookAddedDtoo){
-        this.bookService.add(bookAddedDtoo);
+    public Result add(@RequestBody BookAddedDto bookAddedDto){
+
+        return this.bookService.add(bookAddedDto);
     }
 
     @GetMapping("/kitapgetir")
@@ -51,14 +52,12 @@ public class BooksController {
     }
 
     @PostMapping("/updateForTitle")
-    public void updateForTitle(@RequestBody BookUpdateTitleDto bookUpdateTitleDto){
-        this.bookService.updateForTitle(bookUpdateTitleDto);
+    public Result updateForTitle(@RequestBody BookUpdateTitleDto bookUpdateTitleDto){
+       return this.bookService.updateForTitle(bookUpdateTitleDto);
     }
-
-
     @PostMapping("/updateForPrice")
-    public void updateForPrice(@RequestBody BookUpdatePriceDto bookUpdatePriceDto){
-        this.bookService.updateForPrice(bookUpdatePriceDto);
+    public Result updateForPrice(@RequestBody BookUpdatePriceDto bookUpdatePriceDto){
+       return this.bookService.updateForPrice(bookUpdatePriceDto);
     }
 
 }

@@ -1,12 +1,11 @@
-package com.kodluyoruz.bookstoreappdemo.Dtos.Response;
+package com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class BookResponseDto {
-    private int id;
+public class BookAddedDto {
     private String title;
     private String description;
     private String authorName;

@@ -1,23 +1,23 @@
 package com.kodluyoruz.bookstoreappdemo.Service.Contrats;
 
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookAddedDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdateDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdatePriceDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.BookUpdateTitleDto;
-import com.kodluyoruz.bookstoreappdemo.Dtos.Response.BookResponseDto;
-import com.kodluyoruz.bookstoreappdemo.Entity.Book;
+import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookAddedDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdatePriceDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateTitleDto;
+import com.kodluyoruz.bookstoreappdemo.Dtos.Response.Book.BookResponseDto;
 
 import java.util.List;
 // Onion + Cqrs
 // SOLID
 // I harfi Interfaceylerin ayrışması
 public interface BookService {
-    void  add(BookAddedDto bookAddedDto);
+    Result add(BookAddedDto bookAddedDto);
     List<BookResponseDto> getAll();
     BookResponseDto getById(int id);
     BookResponseDto update(BookUpdateDto bookUpdateDto);
     BookResponseDto delete(int id);
-    void updateForTitle(BookUpdateTitleDto bookUpdateTitleDto);
-    void updateForPrice(BookUpdatePriceDto bookUpdatePriceDto);
+    Result updateForTitle(BookUpdateTitleDto bookUpdateTitleDto);
+    Result updateForPrice(BookUpdatePriceDto bookUpdatePriceDto);
     BookResponseDto getByTitle(String title);
 }

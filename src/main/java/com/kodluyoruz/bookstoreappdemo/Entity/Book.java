@@ -32,4 +32,6 @@ public class Book {
 
     @Column
     private int unitInStock;
+
+
 }
