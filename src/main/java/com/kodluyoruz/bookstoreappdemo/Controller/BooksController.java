@@ -7,7 +7,11 @@ import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdatePriceDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateTitleDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.Response.Book.BookResponseDto;
 import com.kodluyoruz.bookstoreappdemo.Service.Contrats.BookService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,9 +24,8 @@ public class BooksController {
     private final BookService bookService;
 
     @PostMapping("/add")
-    public Result add(@RequestBody BookAddedDto bookAddedDto){
-
-        return this.bookService.add(bookAddedDto);
+    public ResponseEntity<Result> add(@RequestBody BookAddedDto bookAddedDto){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.bookService.add(bookAddedDto));
     }
 
     @GetMapping("/kitapgetir")
@@ -32,8 +35,8 @@ public class BooksController {
 
 
     @GetMapping("/getbyid")
-    public BookResponseDto getById(@RequestParam int id){
-        return this.bookService.getById(id);
+    public ResponseEntity<?> getById(@RequestParam int id){
+            return ResponseEntity.status(HttpStatus.OK).body(this.bookService.getById(id));
     }
 
     @PostMapping("/delete")
@@ -42,8 +45,6 @@ public class BooksController {
        return this.bookService.delete(id);
 
     }
-
-
 
     @PostMapping("/update")
     public BookResponseDto update(@RequestBody BookUpdateDto bookUpdateDto){
@@ -58,6 +59,11 @@ public class BooksController {
     @PostMapping("/updateForPrice")
     public Result updateForPrice(@RequestBody BookUpdatePriceDto bookUpdatePriceDto){
        return this.bookService.updateForPrice(bookUpdatePriceDto);
+    }
+
+    @GetMapping("/getbytitle")
+    public ResponseEntity<BookResponseDto> getByTitle(String title){
+        return ResponseEntity.status(HttpStatus.OK).body(this.bookService.getByTitle(title));
     }
 
 }

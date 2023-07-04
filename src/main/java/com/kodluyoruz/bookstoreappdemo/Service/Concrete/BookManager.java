@@ -1,5 +1,7 @@
 package com.kodluyoruz.bookstoreappdemo.Service.Concrete;
 
+import com.kodluyoruz.bookstoreappdemo.Core.Exception.BookNotFoundExceptionById;
+import com.kodluyoruz.bookstoreappdemo.Core.Exception.BookNotFoundExceptionByTitle;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BusinessException;
 import com.kodluyoruz.bookstoreappdemo.Core.Results.ErrorResult;
 import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 // Data Transfer Object
 // product -> id vs vs müşteri_komisyonu , satıcı_komisyonu,
@@ -29,10 +32,10 @@ public class BookManager implements BookService {
 
     @Override
     public Result add(BookAddedDto bookAddedDto) {
-
+        //Nutuk1234
         Book book=this.addRequestToEntity(bookAddedDto);
-        Book checkBook= this.bookRepository.getByTitle(book.getTitle());
-        if (checkBook != null){
+       Optional<Book> checkBook= this.bookRepository.getByTitle(book.getTitle());
+        if (checkBook.isPresent()){
             //throw new BusinessException("Kitap adı benzersiz olmalı ");
            return new ErrorResult("Kitap adı benzersiz olmalı ");
         }
@@ -41,7 +44,7 @@ public class BookManager implements BookService {
         return new SuccessResult("Kitap başarıyla Eklendi.");
     }
 
-
+// checked ve unchecked
 
     @Override
     public List<BookResponseDto> getAll() {
@@ -54,12 +57,10 @@ public class BookManager implements BookService {
 
     @Override
     public BookResponseDto getById(int id) {
-        Book book = this.bookRepository.getById(id);
+        Book book = this.bookRepository.findById(id).orElseThrow(()-> new BookNotFoundExceptionById(id));
         BookResponseDto dto=this.entityToResponse(book);
         return dto;
     }
-
-
 
     @Override
 
@@ -70,13 +71,9 @@ public class BookManager implements BookService {
         BookResponseDto bookResponseDto=entityToResponse(book);
         return bookResponseDto;
     }
-
-
-
-
     @Override
     public BookResponseDto delete(int id) {
-        Book book=this.bookRepository.getById(id);
+        Book book=this.bookRepository.findById(id).orElseThrow(()-> new BookNotFoundExceptionById(id));
         this.bookRepository.delete(book);
         BookResponseDto bookResponseDto=entityToResponse(book);
         return bookResponseDto;
@@ -107,7 +104,7 @@ public class BookManager implements BookService {
 
     @Override
     public BookResponseDto getByTitle(String title) {
-        Book book=this.bookRepository.getByTitle(title);
+        Book book=this.bookRepository.getByTitle(title).orElseThrow(()-> new BookNotFoundExceptionByTitle(title));
         BookResponseDto bookResponseDto=this.entityToResponse(book);
         return bookResponseDto;
 
@@ -126,7 +123,7 @@ public class BookManager implements BookService {
         return book;
     }
     private Book updateRequestToEntity(BookUpdateDto bookUpdateDto){
-        Book book=this.bookRepository.getById(bookUpdateDto.getId());
+        Book book=this.bookRepository.findById(bookUpdateDto.getId()).orElseThrow(()-> new BookNotFoundExceptionById(bookUpdateDto.getId()));
         book.setDescription(bookUpdateDto.getDescription());
         book.setTitle(bookUpdateDto.getTitle());
         book.setAuthorName(bookUpdateDto.getAuthorName());
