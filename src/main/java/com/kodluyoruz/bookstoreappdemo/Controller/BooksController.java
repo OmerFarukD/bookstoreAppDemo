@@ -1,5 +1,6 @@
 package com.kodluyoruz.bookstoreappdemo.Controller;
 
+import com.kodluyoruz.bookstoreappdemo.Core.Results.DataResult;
 import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookAddedDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateDto;
@@ -29,32 +30,32 @@ public class BooksController {
     }
 
     @GetMapping("/kitapgetir")
-    public List<BookResponseDto> kitaplariGetir(){
-        return this.bookService.getAll();
+    public ResponseEntity<DataResult<List<BookResponseDto>>> kitaplariGetir(){
+        return ResponseEntity.status(HttpStatus.OK).body(this.bookService.getAll());
     }
 
 
     @GetMapping("/getbyid")
-    public ResponseEntity<?> getById(@RequestParam int id){
+    public ResponseEntity<DataResult<BookResponseDto>> getById(@RequestParam int id){
             return ResponseEntity.status(HttpStatus.OK).body(this.bookService.getById(id));
     }
 
     @PostMapping("/delete")
-    public BookResponseDto delete(@RequestParam int id) {
+    public DataResult<BookResponseDto> delete(@RequestParam int id) {
 
        return this.bookService.delete(id);
 
     }
 
     @PostMapping("/update")
-    public BookResponseDto update(@RequestBody BookUpdateDto bookUpdateDto){
+    public DataResult<BookResponseDto> update(@RequestBody BookUpdateDto bookUpdateDto){
       return this.bookService.update(bookUpdateDto);
 
     }
 
     @PostMapping("/updateForTitle")
-    public Result updateForTitle(@RequestBody BookUpdateTitleDto bookUpdateTitleDto){
-       return this.bookService.updateForTitle(bookUpdateTitleDto);
+    public ResponseEntity<Result> updateForTitle(@RequestBody BookUpdateTitleDto bookUpdateTitleDto){
+       return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.bookService.updateForTitle(bookUpdateTitleDto));
     }
     @PostMapping("/updateForPrice")
     public Result updateForPrice(@RequestBody BookUpdatePriceDto bookUpdatePriceDto){
@@ -62,7 +63,7 @@ public class BooksController {
     }
 
     @GetMapping("/getbytitle")
-    public ResponseEntity<BookResponseDto> getByTitle(String title){
+    public ResponseEntity<DataResult<BookResponseDto>> getByTitle(String title){
         return ResponseEntity.status(HttpStatus.OK).body(this.bookService.getByTitle(title));
     }
 

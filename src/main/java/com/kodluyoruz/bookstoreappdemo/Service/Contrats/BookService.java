@@ -1,5 +1,6 @@
 package com.kodluyoruz.bookstoreappdemo.Service.Contrats;
 
+import com.kodluyoruz.bookstoreappdemo.Core.Results.DataResult;
 import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookAddedDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateDto;
@@ -13,11 +14,11 @@ import java.util.List;
 // I harfi Interfaceylerin ayrışması
 public interface BookService {
     Result add(BookAddedDto bookAddedDto);
-    List<BookResponseDto> getAll();
-    BookResponseDto getById(int id);
-    BookResponseDto update(BookUpdateDto bookUpdateDto);
-    BookResponseDto delete(int id);
+    DataResult<List<BookResponseDto>> getAll();
+    DataResult<BookResponseDto> getById(int id);
+    DataResult<BookResponseDto> update(BookUpdateDto bookUpdateDto);
+    DataResult<BookResponseDto> delete(int id);
     Result updateForTitle(BookUpdateTitleDto bookUpdateTitleDto);
     Result updateForPrice(BookUpdatePriceDto bookUpdatePriceDto);
-    BookResponseDto getByTitle(String title);
+    DataResult<BookResponseDto> getByTitle(String title);
 }

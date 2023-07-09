@@ -3,9 +3,7 @@ package com.kodluyoruz.bookstoreappdemo.Service.Concrete;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BookNotFoundExceptionById;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BookNotFoundExceptionByTitle;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BusinessException;
-import com.kodluyoruz.bookstoreappdemo.Core.Results.ErrorResult;
-import com.kodluyoruz.bookstoreappdemo.Core.Results.Result;
-import com.kodluyoruz.bookstoreappdemo.Core.Results.SuccessResult;
+import com.kodluyoruz.bookstoreappdemo.Core.Results.*;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookAddedDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdatePriceDto;
@@ -47,36 +45,44 @@ public class BookManager implements BookService {
 // checked ve unchecked
 
     @Override
-    public List<BookResponseDto> getAll() {
+    public DataResult<List<BookResponseDto>> getAll() {
         List<Book> books = this.bookRepository.findAll();
         List<BookResponseDto> dtoList=this.listEntityToResponseList(books);
-        return dtoList;
+        if (dtoList.isEmpty()){
+            return new ErrorDataResult<>("Kitaplar bulunamadı");
+        }
+
+        return new SuccessDataResult<>(dtoList,"Kitaplar Listelendi.");
     }
 
 
 
     @Override
-    public BookResponseDto getById(int id) {
-        Book book = this.bookRepository.findById(id).orElseThrow(()-> new BookNotFoundExceptionById(id));
-        BookResponseDto dto=this.entityToResponse(book);
-        return dto;
+    public DataResult<BookResponseDto> getById(int id) {
+       Optional <Book> book = this.bookRepository.findById(id);
+       if (book.isEmpty()){
+           return new ErrorDataResult<>("Aradığınız Kriterde Kitap Bulunamadı");
+       }
+
+        BookResponseDto dto=this.entityToResponse(book.get());
+        return new SuccessDataResult<>(dto,"Kitap Getirildi.");
     }
 
     @Override
 
     // Book:{ id: 1 ,title:"Matematiğin aydınlık dünyası
-    public BookResponseDto update(BookUpdateDto bookUpdateDto) {
+    public DataResult<BookResponseDto> update(BookUpdateDto bookUpdateDto) {
         Book book=updateRequestToEntity(bookUpdateDto);
         this.bookRepository.save(book);
         BookResponseDto bookResponseDto=entityToResponse(book);
-        return bookResponseDto;
+        return new SuccessDataResult<>(bookResponseDto,"Kitap Güncellendi.");
     }
     @Override
-    public BookResponseDto delete(int id) {
+    public DataResult<BookResponseDto> delete(int id) {
         Book book=this.bookRepository.findById(id).orElseThrow(()-> new BookNotFoundExceptionById(id));
         this.bookRepository.delete(book);
         BookResponseDto bookResponseDto=entityToResponse(book);
-        return bookResponseDto;
+        return new SuccessDataResult<>(bookResponseDto,"Kitap Slindi");
     }
 
     @Override
@@ -103,11 +109,10 @@ public class BookManager implements BookService {
 
 
     @Override
-    public BookResponseDto getByTitle(String title) {
+    public DataResult<BookResponseDto> getByTitle(String title) {
         Book book=this.bookRepository.getByTitle(title).orElseThrow(()-> new BookNotFoundExceptionByTitle(title));
         BookResponseDto bookResponseDto=this.entityToResponse(book);
-        return bookResponseDto;
-
+        return new SuccessDataResult<>(bookResponseDto,"Başlığa göre ürün getirildi.");
     }
 
     // Converter Methods
