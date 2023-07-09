@@ -4,10 +4,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Table(name = "books")
 @Getter
 @Setter
+// Book
+// Category
+// Author
 public class Book {
 
     @Id
@@ -21,11 +26,14 @@ public class Book {
     @Column
     private String description;
 
-    @Column
-    private String authorName;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 
-    @Column
-    private  String category;
+    @ManyToMany(mappedBy = "books")
+    @JoinTable(name = "book_category",joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<Category> categories;
 
     @Column
     private double price;

@@ -4,7 +4,7 @@ package com.kodluyoruz.bookstoreappdemo.Core.Results;
 // List<ProductResponseDto>
 // ProductResponseDto
 //String
-public class DataResult<T> extends Result{
+public abstract class DataResult<T> extends Result{
     // productList
 // DataResult<List<ProductResponseDto>>
     private T data;
