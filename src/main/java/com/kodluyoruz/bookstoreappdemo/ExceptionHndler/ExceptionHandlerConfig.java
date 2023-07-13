@@ -55,7 +55,7 @@ public class ExceptionHandlerConfig {
 public ErrorDataResult<Map<String,String>> handleValidationExceptionHandler(MethodArgumentNotValidException ex){
   Map<String,String> dictionary = new HashMap<>();
   if (!ex.getFieldErrors().isEmpty()){
-      for (FieldError fieldError : ex.getFieldErrors()){
+      for (FieldError fieldError : ex.getBindingResult().getFieldErrors()){
           dictionary.put(fieldError.getField(),fieldError.getDefaultMessage());
       }
   }

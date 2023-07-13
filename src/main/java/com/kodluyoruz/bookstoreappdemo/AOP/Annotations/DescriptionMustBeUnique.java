@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = { BookDescriptionValidator.class})
 public @interface DescriptionMustBeUnique {
 
-    String message() default "Kitap Açıklaması Özgün olmalı.";
+    String message() default "Kitap Açıklaması benzersiz olmalı.";
 
     Class<?>[] groups() default {};
 
