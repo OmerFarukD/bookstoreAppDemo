@@ -37,7 +37,6 @@ public class BookManager implements BookService {
             //throw new BusinessException("Kitap adı benzersiz olmalı ");
            return new ErrorResult("Kitap adı benzersiz olmalı ");
         }
-
         this.bookRepository.save(book);
         return new SuccessResult("Kitap başarıyla Eklendi.");
     }
@@ -131,7 +130,7 @@ public class BookManager implements BookService {
         Book book=this.bookRepository.findById(bookUpdateDto.getId()).orElseThrow(()-> new BookNotFoundExceptionById(bookUpdateDto.getId()));
         book.setDescription(bookUpdateDto.getDescription());
         book.setTitle(bookUpdateDto.getTitle());
-        book.setAuthorName(bookUpdateDto.getAuthorName());
+      //  book.setAuthorName(bookUpdateDto.getAuthorName());
         book.setPrice(bookUpdateDto.getPrice());
         book.setUnitInStock(bookUpdateDto.getUnitInStock());
         return book;
@@ -142,8 +141,8 @@ public class BookManager implements BookService {
         dto.setTitle(book.getTitle());
         dto.setDescription(book.getDescription());
         dto.setPrice(book.getPrice());
-        dto.setCategory(book.getCategory());
-        dto.setAuthorName(book.getAuthorName());
+      //  dto.setCategory(book.getCategory());
+       // dto.setAuthorName(book.getAuthorName());
         dto.setUnitInStock(book.getUnitInStock());
 
         return dto;
@@ -157,8 +156,8 @@ public class BookManager implements BookService {
             dto.setDescription(book.getDescription());
             dto.setTitle(book.getTitle());
             dto.setPrice(book.getPrice());
-            dto.setCategory(book.getCategory());
-            dto.setAuthorName(book.getAuthorName());
+         //   dto.setCategory(book.getCategory());
+           // dto.setAuthorName(book.getAuthorName());
             dto.setUnitInStock(book.getUnitInStock());
             dtoList.add(dto);
         }
@@ -169,8 +168,8 @@ public class BookManager implements BookService {
         book.setTitle(bookAddedDto.getTitle());
         book.setDescription(bookAddedDto.getDescription());
         book.setPrice(bookAddedDto.getPrice());
-        book.setCategory(bookAddedDto.getCategory());
-        book.setAuthorName(bookAddedDto.getAuthorName());
+     //   book.setCategory(bookAddedDto.getCategory());
+       // book.setAuthorName(bookAddedDto.getAuthorName());
         book.setUnitInStock(bookAddedDto.getUnitInStock());
         return book;
     }

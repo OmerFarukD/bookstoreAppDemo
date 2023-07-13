@@ -20,6 +20,6 @@ public class Category {
     private String categoryName;
 
 
-    @ManyToMany(mappedBy = "categories",fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Book> books;
 }

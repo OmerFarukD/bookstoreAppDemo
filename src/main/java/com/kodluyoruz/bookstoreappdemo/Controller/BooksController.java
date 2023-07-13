@@ -9,6 +9,7 @@ import com.kodluyoruz.bookstoreappdemo.Dtos.RequestDto.Book.BookUpdateTitleDto;
 import com.kodluyoruz.bookstoreappdemo.Dtos.Response.Book.BookResponseDto;
 import com.kodluyoruz.bookstoreappdemo.Service.Contrats.BookService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class BooksController {
     private final BookService bookService;
 
     @PostMapping("/add")
-    public ResponseEntity<Result> add(@RequestBody BookAddedDto bookAddedDto){
+    public ResponseEntity<Result> add(@Valid @RequestBody BookAddedDto bookAddedDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(this.bookService.add(bookAddedDto));
     }
 
@@ -41,15 +42,15 @@ public class BooksController {
     }
 
     @PostMapping("/delete")
-    public DataResult<BookResponseDto> delete(@RequestParam int id) {
+    public ResponseEntity<Result> delete(@RequestParam int id) {
 
-       return this.bookService.delete(id);
+       return ResponseEntity.status(HttpStatus.OK).body(this.bookService.delete(id));
 
     }
 
     @PostMapping("/update")
-    public DataResult<BookResponseDto> update(@RequestBody BookUpdateDto bookUpdateDto){
-      return this.bookService.update(bookUpdateDto);
+    public ResponseEntity<Result> update(@RequestBody BookUpdateDto bookUpdateDto){
+        return ResponseEntity.status(HttpStatus.OK).body(this.bookService.update(bookUpdateDto));
 
     }
 

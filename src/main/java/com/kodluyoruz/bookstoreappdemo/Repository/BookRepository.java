@@ -15,6 +15,7 @@ public interface BookRepository extends JpaRepository<Book,Integer> {
 
     Optional<Book> getByTitle(String title);
 
+    int countByDescription(String description);
 
     // Refflection
     // JPQL Java ve Sql in
