@@ -1,5 +1,6 @@
 package com.kodluyoruz.bookstoreappdemo.Service.Concrete;
 
+import com.kodluyoruz.bookstoreappdemo.AOP.Annotations.Logging.LoggerToDbForResult;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BookNotFoundExceptionById;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BookNotFoundExceptionByTitle;
 import com.kodluyoruz.bookstoreappdemo.Core.Exception.BusinessException;
@@ -29,6 +30,7 @@ public class BookManager implements BookService {
     private final BookRepository bookRepository;
 
     @Override
+    @LoggerToDbForResult
     public Result add(BookAddedDto bookAddedDto) {
         //Nutuk1234
         Book book=this.addRequestToEntity(bookAddedDto);
@@ -70,6 +72,7 @@ public class BookManager implements BookService {
     @Override
 
     // Book:{ id: 1 ,title:"Matematiğin aydınlık dünyası
+    @LoggerToDbForResult
     public DataResult<BookResponseDto> update(BookUpdateDto bookUpdateDto) {
         Book book=updateRequestToEntity(bookUpdateDto);
         this.bookRepository.save(book);
